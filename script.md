@@ -1,18 +1,15 @@
-### Notes for script
+**Layout**
 
--   Backend aleady setup
--   Not going through credentials since we already have those
--   Client side and server side auth have a slightly different process
-    -   **Client:** Call createOAuthSession method -> Sends you to OAuth consent screen -> Returns you to home URL with session set
-    -   **Server:** - Create URL for conset screen -> Redirect to custom endpoint so I can create session and cookie
+-   [Introduction](###Intro)
+-   [Outline](###Outline)
 
-### Script V1
+### Intro
 
-**Intro**
+Hey everybody in this video we're gonna take a look at how you can handle OAuth on the server side with Appwrite. Now I've made several videos already where I did Sign in with google, sign in with Github and even sign in with Apple, but All of these have been done on the client side with Appwrites web SDK.
 
-Hey everybody in this video we're gonna take a look at how you can handle OAuth on the server side with Appwrite. Now I've made several videos already where I did Sign in with google, sign in with Github and even sign in with Apple, but All of these have been done on the client side with Appwrites web SDK. The process is somewhat simular if you want to do this on the server side with some slight differences, so we'll take a look at how this can now be done on the server side. I'll make some follow up videos doing this with tools like Next JS later, however in this one I want to focus on the core concepts so I'm gonna use Node js with express to demonstrate all of this.
+The process is somewhat simular if you want to do this on the server side with some slight differences, so we'll take a look at how this can now be done on the server side. I'll make some follow up videos doing this with tools like Next JS later, however in this one I want to focus on the core concepts so I'm gonna use Node js with express to demonstrate all of this.
 
-**What we will do**
+### Outline
 
 So in this video we'll create a simple express app with 4 routes.
 
@@ -20,11 +17,11 @@ So in this video we'll create a simple express app with 4 routes.
 -   Another that is protected for authenticated users, which retrives the currently logged in user
 -   And the other two will be routes that initiate the OAuth process and set a session cookie once a user is authenticated.
 
-**Setup note**
+### Prerequisits
 
 Now we're gonna set up our express app from scratch here, but I we will not cover setting up our appwrite backend or configuring our google account. If you want to see how to do that, I already did this in a previous video, so I'll link that up. The google config process is only about 2:30 so just watch that and come back to this video.
 
-**Start setup**
+### Initial setup
 
 Alright so let's get right to it and setup a new express application.
 
@@ -62,7 +59,7 @@ app.listen(port, () => {
 });
 ```
 
-**First Routes**
+### First Routes
 
 Now let's create our first route, which will be the root route users go to and this will be unprotected so anybody can open this, so we'll just return some hello world message.
 
@@ -104,7 +101,7 @@ app.use(cookieParser());
 
 Let's test this route out. Here we are blocked from viewing anything, But if I go in and manualy set the cookie, I can proceed to view it as a logged in user. Later we'll use the session cookie we generate to return our actuall user but until we do that let's leave it like this.
 
-**OAuth Routes**
+### OAuth Routes
 
 There are still two more routes that we need to add in here. One will be a route to start the authentication process with our OAuth provider, and the other will be a route that creates a session and sets a cookie once we have logged in with our provider.
 
@@ -130,7 +127,7 @@ app.get("/success", async (req, res) => {
 });
 ```
 
-**Appwrite client**
+### Appwrite client
 
 As I mentioned before I already have an appwrite project ready to go. I'm gonna get some credentials from my project and set them in this `.env` file. If you don't have one simply go to appwrite.io and create a new project. In your console you'll need to get your project id, so let's copy this and paste it over into the `.env` file. We'll also need to generate a API key with auth permissions set, so let's go ahead and create that under the intergratuons section, and just for demo purposes I'll select all scopes for this key. Now let's just add that into our env file and set a endpoint as well.
 
@@ -185,7 +182,7 @@ const createAppwriteClient = async (type, session) => {
 export default createAppwriteClient;
 ```
 
-**Generating OAuth URL**
+### Generating OAuth URL
 
 Let's go ahead and import the createAppwriteClient function into server.js so we can begin using it, as well as the OAuthProvider enum, which just allows us to specify the provider we want to use.
 
@@ -231,7 +228,7 @@ Now if we go to `/auth` we'll see this button which we can click on.
 
 For demo purposes I am gonna be using incognito mode so I can make sure I have a fresh session each time I start this process.
 
-**Creating Sessions**
+### Creating Sessions
 
 So we are able to login with our OAuth provider, but we are not acutally logged in until we can actually create a session and set some sort of state. Until we do this we will need to login on each request so let's finalize this in the success route.
 
