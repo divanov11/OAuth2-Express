@@ -1,7 +1,14 @@
-**Layout**
+**Table of contents**
 
--   [Introduction](###Intro)
--   [Outline](###Outline)
+-   [Introduction](#Intro)
+-   [Outline](#Outline)
+-   [Prerequisits](#Prerequisits)
+-   [Initial setup](#Initial-setup)
+-   [First Routes](#First-Routes)
+-   [OAuth Routes](#OAuth-Routes)
+-   [Appwrite client](#Appwrite-client)
+-   [Generating OAuth URL](#Generating-OAuth-URL)
+-   [Creating Sessions](#Creating-Sessions)
 
 ### Intro
 
