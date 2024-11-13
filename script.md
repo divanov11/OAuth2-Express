@@ -110,7 +110,9 @@ Let's test this route out. Here we are blocked from viewing anything, But if I g
 
 ### OAuth Routes
 
-There are still two more routes that we need to add in here. One will be a route to start the authentication process with our OAuth provider, and the other will be a route that creates a session and sets a cookie once we have logged in with our provider.
+For the OAuth sign in flow we'll create two routes. The first route will start the sign in flow by creating a custom link which takes us to our OAuth login screen, in this case google login, and the other will be the route that our OAuth provider sends us back to once we sign in. When our provider sends us back here, it will add on a userId and a secret in the url as a query parameter.
+
+The success route will be responsible for creating a session using the userId and secret, them setting a session cookie so this user can remain authenticated on future requests.
 
 We'll call theses routes `/auth` and `/success`. Before we add any functionality I'll need to first initate my appwrite client so we'll do that first.
 
